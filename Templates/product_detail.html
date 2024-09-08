@@ -1,0 +1,17 @@
+{% block content %}
+ <h1 style="text-align: center; font-family: 'Arial', sans-serif; color: #333;">Product Detail</h1>
+  <div style="display: flex; justify-content: center; align-items: center; height: 80vh; padding: 20px;">
+    <div style="border-radius: 15px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); padding: 30px; text-align: center; width: 500px; background-color: #fff;">
+      <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px; margin-bottom: 10px;">
+      <h1 style="font-size: 2em; margin: 20px 0 10px; color: #333; font-weight: bold;">{{ product.name }}</h1>
+      <p style="font-size: 1.2em; color: #555; margin-bottom: 20px; line-height: 1.6;">{{ product.description }}</p>
+      <p style="font-size: 1.5em; font-weight: bold; color: #007BFF; margin-bottom: 20px;">${{ product.price }}</p>
+        <form method="post" action="{% url 'add_to_cart' product.pk %}">
+          {% csrf_token %}
+          <button type="submit" style="padding: 10px 20px; margin-bottom: 15px; background-color: #007BFF; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
+              Add to Cart
+          </button>
+        </form>
+    </div>
+  </div>
+{% endblock %}

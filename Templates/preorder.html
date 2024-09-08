@@ -1,0 +1,46 @@
+{% block content %}
+    <div style="padding: 50px; background-color: #f9fafc; max-width: 850px; margin: 60px auto; border-radius: 16px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);">
+        <h1 style="font-family: 'Poppins', sans-serif; font-size: 2.5em; color: #222; text-align: center; margin-bottom: 40px; letter-spacing: 0.5px;">Preorder Confirmation</h1>
+
+        {% if cart_items %}
+            <ul style="list-style-type: none; padding: 0; margin-bottom: 40px;">
+                {% for item in cart_items %}
+                    <li style="display: flex; justify-content: space-between; align-items: center; background-color: #ffffff; border-radius: 12px; padding: 20px; margin-bottom: 25px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); transition: box-shadow 0.3s ease;">
+                        <div style="display: flex; align-items: center;">
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="width: 110px; height: 110px; object-fit: cover; border-radius: 12px; margin-right: 20px;">
+                            <div>
+                                <h2 style="font-family: 'Poppins', sans-serif; font-size: 1.6em; color: #333; margin-bottom: 10px;">{{ item.product.name }}</h2>
+                                <p style="font-size: 1em; color: #777; margin: 0;">Quantity: {{ item.quantity }}</p>
+                            </div>
+                        </div>
+
+                    </li>
+                {% endfor %}
+            </ul>
+            <div style="text-align: center;">
+                <p style="font-family: 'Poppins', sans-serif; font-size: 1.8em; font-weight: bold; color: #222; margin-bottom: 25px;">Total: ${{ total }}</p>
+
+                <!-- Razorpay Button -->
+                <form id="razorpay-form" method="post">
+                    <script src="https://checkout.razorpay.com/v1/checkout.js"
+                            data-key="{{ razorpay_key_id }}"
+                            data-amount="{{ total_price|floatformat:2|add:0 }}"
+                            data-currency="{{ currency }}"
+                            data-order_id="{{ razorpay_order_id }}"
+                            data-buttontext="Pay Now"
+                            data-name="Your Store Name"
+                            data-description="Order Payment"
+                            data-image="https://example.com/your_logo.jpg"
+                            data-prefill.name="{{ request.user.username }}"
+                            data-prefill.email="{{ request.user.email }}"
+                            data-theme.color="#4CAF50"
+                            style="border-radius: 50px; padding: 12px 40px; background-color: #4CAF50; color: #fff; font-size: 1.2em; font-family: 'Poppins', sans-serif; border: none; cursor: pointer;">
+                    </script>
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                </form>
+            </div>
+        {% else %}
+            <p style="font-family: 'Poppins', sans-serif; font-size: 1.6em; color: #888; text-align: center; margin-top: 40px;">Your cart is currently empty.</p>
+        {% endif %}
+    </div>
+{% endblock %}
